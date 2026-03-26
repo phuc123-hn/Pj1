@@ -149,18 +149,14 @@
 </div>
 
 <script>
-// ============================================================
 //  KIẾM HIỆP TRUYỀN — Complete Wuxia Game
 //  Single-file HTML5 Canvas game
-// ============================================================
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const W = 1280, H = 720;
 
-// ============================================================
 // CONSTANTS & CONFIG
-// ============================================================
 const GRAVITY = 0.55;
 const FLOOR_Y = H - 100;
 const CAMERA_DEAD_ZONE = 250;
@@ -196,9 +192,7 @@ const MATERIALS = [
   { id:'fireEss', name:'Hỏa Tinh', icon:'🔥', color:'#f60' },
 ];
 
-// ============================================================
 // GAME STATE
-// ============================================================
 let game = {
   running: false, paused: false, upgradeOpen: false,
   frame: 0, score: 0, killCount: 0, bossSpawned: false,
@@ -211,9 +205,7 @@ let game = {
 let player, enemies, weapons, projectiles;
 let keys = {};
 
-// ============================================================
 // PLAYER
-// ============================================================
 class Player {
   constructor() {
     this.x = 200; this.y = FLOOR_Y - 50;
@@ -458,9 +450,7 @@ class Player {
   }
 }
 
-// ============================================================
 // ENEMY
-// ============================================================
 class Enemy {
   constructor(type, x) {
     const t = ENEMY_TYPES.find(e=>e.type===type) || ENEMY_TYPES[0];
@@ -667,9 +657,7 @@ class Enemy {
   }
 }
 
-// ============================================================
 // PARTICLES
-// ============================================================
 function spawnHitParticles(worldX, worldY) {
   for(let i=0;i<8;i++) {
     const angle = Math.random()*Math.PI*2;
@@ -745,9 +733,7 @@ function drawParticles() {
   });
 }
 
-// ============================================================
 // DAMAGE NUMBERS
-// ============================================================
 function spawnDmgNumber(screenX, screenY, dmg, rarity='common') {
   const el = document.createElement('div');
   el.className = 'dmgNum';
@@ -760,9 +746,7 @@ function spawnDmgNumber(screenX, screenY, dmg, rarity='common') {
   setTimeout(()=>el.remove(),900);
 }
 
-// ============================================================
 // MESSAGES
-// ============================================================
 function addMsg(text, color='#ffd700') {
   const feed = document.getElementById('msgFeed');
   const el = document.createElement('div');
@@ -772,9 +756,7 @@ function addMsg(text, color='#ffd700') {
   while(feed.children.length>6) feed.removeChild(feed.firstChild);
 }
 
-// ============================================================
 // SOUND (Web Audio API - procedural)
-// ============================================================
 let audioCtx;
 function initAudio() {
   try { audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){}
@@ -818,9 +800,7 @@ function playSound(type) {
   }
 }
 
-// ============================================================
 // MAP / BACKGROUND DRAWING
-// ============================================================
 // Parallax layers stored as procedural data
 let mapObjects = []; // {type, x, y, w, h}
 
@@ -1001,9 +981,7 @@ function drawGround() {
   }
 }
 
-// ============================================================
 // WEAPON DROPS
-// ============================================================
 function drawWeapons() {
   weapons.forEach(w => {
     if(w.picked) return;
@@ -1027,16 +1005,12 @@ function drawWeapons() {
   });
 }
 
-// ============================================================
 // UTILITY
-// ============================================================
 function rectsOverlap(x1,y1,w1,h1, x2,y2,w2,h2) {
   return x1<x2+w2 && x1+w1>x2 && y1<y2+h2 && y1+h1>y2;
 }
 
-// ============================================================
 // HUD UPDATE
-// ============================================================
 function updateHUD() {
   const p = player;
   document.getElementById('hpBarInner').style.width = (p.hp/p.maxHp*100)+'%';
@@ -1055,9 +1029,7 @@ function updateHUD() {
   });
 }
 
-// ============================================================
 // UPGRADE MENU
-// ============================================================
 function openUpgrade() {
   if(!game.running||player.isDead) return;
   game.upgradeOpen=true; game.paused=true;
@@ -1137,9 +1109,7 @@ function refreshUpgradeMenu() {
   });
 }
 
-// ============================================================
 // ENEMY SPAWNING
-// ============================================================
 function spawnEnemy() {
   const types = ['assassin','beast','magician'];
   // Weight by difficulty
@@ -1162,9 +1132,7 @@ function trySpawnBoss() {
   }
 }
 
-// ============================================================
 // MAIN GAME LOOP
-// ============================================================
 function update() {
   if(!game.running||game.paused) return;
   game.frame++;
@@ -1195,9 +1163,7 @@ function draw() {
   drawParticles();
 }
 
-// ============================================================
 // GAME START / INIT
-// ============================================================
 function startGame() {
   initAudio();
   document.getElementById('startScreen').style.display='none';
@@ -1233,9 +1199,7 @@ function togglePause() {
   if(!game.paused) loop();
 }
 
-// ============================================================
 // INPUT
-// ============================================================
 document.addEventListener('keydown', e=>{
   keys[e.key]=true;
   if(e.key==='Escape'&&game.running&&!game.upgradeOpen) togglePause();
